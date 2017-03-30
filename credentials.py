@@ -32,7 +32,7 @@ class Start(object):
 		})
 
 		url = "https://www.amazon.com/ap/oa"
-		callback = cherrypy.url() + "code"
+		callback = cherrypy.url().replace("http:", "https:") + "code"
 		payload = {
 			"client_id": config['alexa']['Client_ID'],
 			"scope": "alexa:all",
@@ -46,7 +46,7 @@ class Start(object):
 
 	def code(self, var=None, **params):		# pylint: disable=unused-argument
 		code = quote(cherrypy.request.params['code'])
-		callback = cherrypy.url()
+		callback = cherrypy.url().replace("http:", "https:")
 		payload = {
 			"client_id": config['alexa']['Client_ID'],
 			"client_secret": config['alexa']['Client_Secret'],
@@ -80,8 +80,8 @@ for cred in credentials:
 with open(alexapi.config.filename, 'r') as stream:
 	config = yaml.load(stream)
 
-
-ip = [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
-print("Ready goto http://{}:5050 or http://localhost:5050  to begin the auth process".format(ip))
-print("(Press Ctrl-C to exit this script once authorization is complete)")
-cherrypy.quickstart(Start())
+# need to login to Amazon
+if not config['alexa']['refresh_token']:
+    public_url = os.environ.get('RESIN_DEVICE_UUID') + '.resindevice.io'
+    print("Go to https://{} to begin the auth process".format(public_url))
+    cherrypy.quickstart(Start())
