@@ -62,6 +62,7 @@ class Start(object):
 
 		alexapi.config.set_variable(['alexa', 'refresh_token'], resp['refresh_token'])
 
+                cherrypy.engine.exit()
 		return (
 			"<h2>Success!</h2><h3> Refresh token has been added to your "
 			"config file, you may now reboot the Pi </h3><br>{}"
