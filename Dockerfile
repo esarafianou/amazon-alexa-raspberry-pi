@@ -15,3 +15,8 @@ RUN git clone --depth=1 https://github.com/alexa-pi/AlexaPi.git && \
     touch /var/log/alexa.log && \
     cp config.template.yaml config.yaml
 
+WORKDIR AlexaPi
+
+COPY credentials.py ./src
+CMD python src/credentials.py && python src/main.py
+
