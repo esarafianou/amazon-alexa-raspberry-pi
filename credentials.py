@@ -11,6 +11,8 @@ import yaml
 import cherrypy
 import requests
 
+import alsaaudio
+
 try:
 	from urllib.parse import quote
 except ImportError:
@@ -76,6 +78,10 @@ credentials = ['Client_ID', 'Client_Secret', 'Device_Type_ID', 'Security_Profile
 
 for cred in credentials:
     alexapi.config.set_variable(['alexa', cred], os.environ.get(cred))
+
+# Configure input_device
+input_devices = alsaaudio.pcms(alsaaudio.PCM_CAPTURE)
+alexapi.config.set_variable(['sound', 'input_device'], input_devices[len(input_devices) - 1])
 
 with open(alexapi.config.filename, 'r') as stream:
 	config = yaml.load(stream)
