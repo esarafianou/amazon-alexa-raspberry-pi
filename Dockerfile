@@ -9,3 +9,9 @@ RUN apt-get update && apt-get install -y -q \
     vlc-nox \
     --no-install-recommends
 
+RUN git clone --depth=1 https://github.com/alexa-pi/AlexaPi.git && \
+    cd AlexaPi/src && \
+    pip install -r requirements.txt && \
+    touch /var/log/alexa.log && \
+    cp config.template.yaml config.yaml
+
