@@ -72,7 +72,7 @@ class Start(object):
 	code.exposed = True
 
 cherrypy.config.update({'server.socket_host': '0.0.0.0'})
-cherrypy.config.update({'server.socket_port': int(os.environ.get('PORT', '5050'))})
+cherrypy.config.update({'server.socket_port': int(os.environ.get('PORT', '80'))})
 cherrypy.config.update({"environment": "embedded"})
 
 credentials = ['Client_ID', 'Client_Secret', 'Device_Type_ID', 'Security_Profile_Description', 'Security_Profile_ID']
