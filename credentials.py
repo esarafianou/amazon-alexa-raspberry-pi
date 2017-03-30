@@ -18,9 +18,6 @@ except ImportError:
 
 import alexapi.config
 
-with open(alexapi.config.filename, 'r') as stream:
-	config = yaml.load(stream)
-
 
 class Start(object):
 
@@ -74,6 +71,14 @@ class Start(object):
 cherrypy.config.update({'server.socket_host': '0.0.0.0'})
 cherrypy.config.update({'server.socket_port': int(os.environ.get('PORT', '5050'))})
 cherrypy.config.update({"environment": "embedded"})
+
+credentials = ['Client_ID', 'Client_Secret', 'Device_Type_ID', 'Security_Profile_Description', 'Security_Profile_ID']
+
+for cred in credentials:
+    alexapi.config.set_variable(['alexa', cred], os.environ.get(cred))
+
+with open(alexapi.config.filename, 'r') as stream:
+	config = yaml.load(stream)
 
 
 ip = [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
